@@ -16,7 +16,7 @@
 from numpy import exp
 
 
-def surf( mge, x, y ):
+def surf( pmge, x, y ):
     
     surf = pmge.i * exp( -0.5 / pmge.s**2 * ( x**2 + y**2 / pmge.q**2 ) )
     surf = surf.sum()
