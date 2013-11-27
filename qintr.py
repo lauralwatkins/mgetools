@@ -6,7 +6,7 @@
 #   and the inclination angle.
 #   
 #   INPUTS
-#     p : projected acis ratios
+#     p : projected axis ratios
 #     i : inclination angle [radians]
 #   
 #   HISTORY

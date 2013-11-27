@@ -22,12 +22,12 @@ def deproject( pmge, incl ):
     
     imge_q = pmge.q**2 - cos( incl )**2
     
-    if size( where( imge_q < 0 ) ) > 0:
+    if any( imge_q <= 0 ):
         print 'Inclination too low q < 0'
         sys.exit(1)
     
     imge_q = sqrt( imge_q ) / sin( incl )
-    if size( where( imge_q < 0.05 ) ) > 0:
+    if any( imge_q < 0.05 ):
         print 'q < 0.05 components'
         sys.exit(1)
     
