@@ -7,7 +7,7 @@
 #   
 #   INPUTS
 #     p : projected axis ratios
-#     q : intrinsic acis ratios
+#     q : intrinsic axis ratios
 #   
 #   HISTORY
 #     v1.0 : Laura L Watkins [lauralwatkins@gmail.com] - MPIA, 2012/06/19
