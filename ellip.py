@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 # -----------------------------------------------------------------------------
-# ELLIP
-#   
-#   Plots an ellipticity profile for an input MGE.
-#   
-#   INPUTS
-#     mge  : projected MGE
-#   
-#   OPTIONS
-#     save : path to save location
-#   
-#   Laura L Watkins [lauralwatkins@gmail.com] - MPIA
+# MGE.ELLIP
+# Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
 from matplotlib.pyplot import *
 from surf import surf
 from numpy import array, linspace, log10
-from colours import cmap_rainbow
+import colours
 from scipy.interpolate import spline
 
 
 def ellip( mge, save="" ):
+    
+    """
+    Plots an ellipticity profile for an input MGE.
+    
+    INPUTS
+      mge  : projected MGE
+    
+    OPTIONS
+      save : path to save location
+    """
     
     # plotting range
     lim = mge.s.max() * 2.
@@ -42,7 +43,7 @@ def ellip( mge, save="" ):
     rc( 'xtick', labelsize='8' )
     rc( 'ytick', labelsize='8' )
     rc( 'axes', labelsize='10' )
-    rainbow = cmap_rainbow()
+    rainbow = colours.cmap_rainbow()
     
     # set up figure
     fig = figure( figsize=( 4, 3 ) )

@@ -1,26 +1,26 @@
 #!/usr/bin/env python
 # -----------------------------------------------------------------------------
-# PLOT2D
-#   
-#   Plots a 2d surface density map for a given mge.
-#   
-#   INPUTS
-#     mge_in : projected MGE
-#   
-#   OPTIONS
-#     save   : path to save location
-#   
-#   HISTORY
-#     v1.0 : Laura L Watkins [lauralwatkins@gmail.com] - MPIA, 2013/04/08
+# MGE.PLOT2D
+# Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
 import matplotlib.pyplot as plt
 from surf import surf
 from numpy import array, linspace, log10
-from colours import cmap_rainbow
+import colours
 
 
 def plot2d( mge_in, ml=1., save="" ):
+    
+    """
+    Plots a 2d surface density map for a given mge.
+    
+    INPUTS
+      mge_in : projected MGE
+    
+    OPTIONS
+      save   : path to save location
+    """
     
     mge = mge_in.copy()
     
@@ -45,7 +45,7 @@ def plot2d( mge_in, ml=1., save="" ):
     plt.rc( 'xtick', labelsize='8' )
     plt.rc( 'ytick', labelsize='8' )
     plt.rc( 'axes', labelsize='10' )
-    rainbow = cmap_rainbow()
+    rainbow = colours.cmap_rainbow()
     
     
     fig = plt.figure( figsize=( 4, 3 ) )

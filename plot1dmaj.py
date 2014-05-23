@@ -1,26 +1,27 @@
 #!/usr/bin/env python
 # -----------------------------------------------------------------------------
-# PLOT1DMAJ
-#   
-#   Plots 1d major-axis surface density profiles for a given mge.
-#   
-#   INPUTS
-#     mge_in : projected MGE
-#   
-#   OPTIONS
-#     ml     : adjust central surface brightness values by mass-to-light ratio
-#     save   : path to save location
-#   
-#   Laura L Watkins [lauralwatkins@gmail.com] - MPIA
+# MGE.PLOT1DMAJ
+# Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
 import matplotlib.pyplot as plt
 from surf import surf
 from numpy import array, linspace, log10
-from colours import cmap_rainbow
+import colours
 
 
 def plot1dmaj( mge_in, ml=1., save="", xlog=False ):
+    
+    """
+    Plots 1d major-axis surface density profiles for a given mge.
+    
+    INPUTS
+      mge_in : projected MGE
+    
+    OPTIONS
+      ml     : adjust central surface brightness values by mass-to-light ratio
+      save   : path to save location
+    """
     
     mge = mge_in.copy()
     
@@ -54,13 +55,8 @@ def plot1dmaj( mge_in, ml=1., save="", xlog=False ):
     plt.rc( 'xtick', labelsize='8' )
     plt.rc( 'ytick', labelsize='8' )
     plt.rc( 'axes', labelsize='10' )
-    rainbow = cmap_rainbow()
-    
-    # plot colours
-    import matplotlib.colors as colors
-    import matplotlib.cm as cmx
-    cnorm = colors.Normalize( vmin=0, vmax=255 )
-    cols = cmx.ScalarMappable( norm=cnorm, cmap=rainbow ).to_rgba
+    rainbow = colours.cmap_rainbow()
+    rgb = colours.cmap2rgb( rainbow )
     cc = linspace( 255., 0., mge.size )
     
     
@@ -76,7 +72,7 @@ def plot1dmaj( mge_in, ml=1., save="", xlog=False ):
     else: ax.plot( xx, sx, "k", lw=3, alpha=0.8 )
     
     for i in range( mge.size ):
-        ax.plot( xx, sxx[i], "k", lw=3, alpha=0.8, c=cols( cc[i] ) )
+        ax.plot( xx, sxx[i], "k", lw=3, alpha=0.8, c=rgb( cc[i] ) )
     
     ax.set_xlim( 0., lim )
     ax.set_ylim( vmin, vlim )

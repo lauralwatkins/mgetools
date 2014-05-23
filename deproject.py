@@ -1,15 +1,7 @@
 #!/usr/bin/env python
 # -----------------------------------------------------------------------------
-# DEPROJECT
-#   
-#   Deprojects an MGE given an inclination value.
-#   
-#   INPUTS
-#     pmge : projected MGE
-#     incl : inclination [radians]
-#   
-#   HISTORY
-#     v1.0 : Laura L Watkins [lauralwatkins@gmail.com] - MPIA, 2012/03/14
+# MGE.DEPROJECT
+# Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
 from numpy import cos, pi, recarray, sin, size, sqrt, where
@@ -17,6 +9,14 @@ import sys
 
 
 def deproject( pmge, incl ):
+    
+    """
+    Deprojects an MGE given an inclination value.
+    
+    INPUTS
+      pmge : projected MGE
+      incl : inclination [radians]
+    """
     
     imge = recarray.copy( pmge )
     
