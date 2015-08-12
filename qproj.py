@@ -4,10 +4,10 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import cos, sin, sqrt
+import numpy as np
 
 
-def qproj( q, i ):
+def qproj(q, i):
     
     """
     Program calculates projected axis ratios from the intrinsic axis ratios
@@ -18,6 +18,6 @@ def qproj( q, i ):
       i : inclination angle [radians]
     """
     
-    p = sqrt( q**2 * sin(i)**2 + cos(i)**2 )
+    p = np.sqrt(q**2*np.sin(i)**2+np.cos(i)**2)
     
     return p

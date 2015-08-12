@@ -4,10 +4,10 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import exp
+import numpy as np
 
 
-def dens( imge, r, z ):
+def dens(imge, r, z):
     
     """
     Calculates the volume density of an MGE at given (R,z).
@@ -18,7 +18,8 @@ def dens( imge, r, z ):
       z    : intrinsic z
     """
     
-    dens = imge.i * exp( -0.5 / imge.s**2 * ( r**2 + z**2 / imge.q**2 ) )
-    dens = dens.sum()
+    cpts = np.array([ cpt["i"]*np.exp(-0.5/cpt["s"]**2*(r**2+(z/cpt["q"])**2))\
+        for cpt in imge ])
+    dens = np.sum(cpts, axis=0)
     
     return dens

@@ -4,10 +4,10 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import exp
+import numpy as np
 
 
-def surf( pmge, x, y ):
+def surf(pmge, x, y):
     
     """
     Calculates the surface density of an MGE at given (x',y').
@@ -18,7 +18,8 @@ def surf( pmge, x, y ):
       y    : projected y'
     """
     
-    surf = pmge.i * exp( -0.5 / pmge.s**2 * ( x**2 + y**2 / pmge.q**2 ) )
-    surf = surf.sum()
+    cpts = np.array([ cpt["i"]*np.exp(-0.5/cpt["s"]**2*(x**2+(y/cpt["q"])**2))\
+        for cpt in pmge ])
+    surf = np.sum(cpts, axis=0)
     
     return surf

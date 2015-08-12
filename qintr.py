@@ -4,10 +4,10 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import cos, sin, sqrt
+import numpy as np
 
 
-def qintr( p, i ):
+def qintr(p, i):
     
     """
     Program calculates intrinsic axis ratios from the projected axis ratios
@@ -18,6 +18,6 @@ def qintr( p, i ):
       i : inclination angle [radians]
     """
     
-    q = sqrt( p**2 - cos(i)**2 ) / sin(i)
+    q = np.sqrt(p**2-np.cos(i)**2)/np.sin(i)
     
     return q

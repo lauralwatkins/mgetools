@@ -4,11 +4,11 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import cos, pi, recarray, sin, size, sqrt, where
+from numpy import *
 import sys
 
 
-def deproject( pmge, incl ):
+def deproject(pmge, incl):
     
     """
     Deprojects an MGE given an inclination value.
@@ -18,20 +18,20 @@ def deproject( pmge, incl ):
       incl : inclination [radians]
     """
     
-    imge = recarray.copy( pmge )
+    imge = pmge.copy()
     
-    imge_q = pmge.q**2 - cos( incl )**2
+    imge_q = pmge["q"]**2 - cos(incl)**2
     
-    if any( imge_q <= 0 ):
+    if any(imge_q <= 0):
         print 'Inclination too low q < 0'
         sys.exit(1)
     
-    imge_q = sqrt( imge_q ) / sin( incl )
-    if any( imge_q < 0.05 ):
+    imge_q = sqrt(imge_q) / sin(incl)
+    if any(imge_q < 0.05):
         print 'q < 0.05 components'
         sys.exit(1)
     
-    imge.q = imge_q
-    imge.i = pmge.i * pmge.q / imge.q / pmge.s / sqrt( 2. * pi )
+    imge["q"] = imge_q
+    imge["i"] *= pmge["q"] / imge["q"] / pmge["s"] / sqrt(2.*pi)
     
     return imge

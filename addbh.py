@@ -4,11 +4,11 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import pi
-from numpy.lib.recfunctions import stack_arrays
+import numpy as np
+from astropy import table
 
 
-def addbh( mge, mbh, rbh ):
+def addbh(mge, mbh, rbh):
     
     """
     Adds a black hole component to a projected MGE.
@@ -19,14 +19,17 @@ def addbh( mge, mbh, rbh ):
       rbh : black hole scale radius [pc]
     """
     
-    if mbh > 0. and rbh > 0.:
+    if mbh>0. and rbh>0.:
         
         bh = mge[:1].copy()
+        mge["n"] += 1
         
-        bh.i = mbh / 2. / pi / rbh**2
-        bh.s = rbh
-        bh.q = 1.
+        bh["i"] = mbh/2./np.pi/rbh**2
+        bh["s"] = rbh
+        bh["q"] = 1.
         
-        mgebh = stack_arrays( ( bh, mge ), asrecarray=True )
+        mgebh = table.vstack([bh, mge])
+    
+    else: mgebh = mge
     
     return mgebh

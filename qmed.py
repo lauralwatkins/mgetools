@@ -4,10 +4,10 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import median, size, where
+import numpy as np
 
 
-def qmed( mge, lim=0. ):
+def qmed(mge, lim=0):
     
     """
     Calculates the median axial ratio for a given MGE.
@@ -17,11 +17,9 @@ def qmed( mge, lim=0. ):
       lim : if non-zero, consider only components within limit (default: 0)
     """
     
-    wh = where( mge.s < lim )
+    wh = np.where(mge["s"]<lim)
     
-    if size( wh ) < 3:
-        qmed = median( mge.q )
-    else:
-        qmed = median( mge[wh].q )
+    if np.size(wh)<3: qmed = np.median(mge["q"])
+    else: qmed = np.median(mge[wh]["q"])
     
     return qmed

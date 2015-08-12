@@ -4,10 +4,10 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import arccos, pi, rad2deg, sqrt
+import numpy as np
 
 
-def incl( p, q ):
+def incl(p, q):
     
     """
     Program calculates implied inclination angle (in radians) from projected
@@ -18,7 +18,7 @@ def incl( p, q ):
       q : intrinsic axis ratios
     """
     
-    if q == 1.: i = pi / 2.
-    else: i = arccos( sqrt( ( p**2 - q**2 ) / ( 1. - q**2 ) ) )
+    if q==1.: i = np.pi/2.
+    else: i = np.arccos(np.sqrt((p**2-q**2)/(1.-q**2)))
     
     return i
