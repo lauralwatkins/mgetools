@@ -22,7 +22,7 @@ def surf(pmge, x, y):
         x.to(pmge["s"].unit)
         y.to(pmge["s"].unit)
     except:
-        print "MGE.SURF: cannot convert x and y units to MGE width units."
+        print("MGE.SURF: cannot convert x and y units to MGE width units.")
         return np.nan
     
     cpts = np.array([ cpt["i"]*np.exp(-0.5/cpt["s"]**2 \

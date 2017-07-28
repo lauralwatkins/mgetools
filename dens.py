@@ -22,7 +22,7 @@ def dens(imge, r, z):
         r.to(imge["s"].unit)
         z.to(imge["s"].unit)
     except:
-        print "MGE.SURF: cannot convert r and z units to MGE width units."
+        print("MGE.SURF: cannot convert r and z units to MGE width units.")
         return np.nan
     
     cpts = np.array([ cpt["i"]*np.exp(-0.5/cpt["s"]**2 \

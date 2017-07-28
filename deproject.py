@@ -25,12 +25,12 @@ def deproject(pmge, incl):
     
     imge["q"] = pmge["q"]**2 - np.cos(incl)**2
     if np.any(imge["q"] <= 0):
-        print "MGE.DEPROJECT: Inclination too low q < 0"
+        print("MGE.DEPROJECT: Inclination too low q < 0")
         sys.exit(1)
     
     imge["q"] = np.sqrt(imge["q"]) / np.sin(incl)
     if np.any(imge["q"] < 0.05):
-        print "MGE.DEPROJECT: q < 0.05 components"
+        print("MGE.DEPROJECT: q < 0.05 components")
         sys.exit(1)
     
     imge["i"] = pmge["i"]*pmge["q"]/imge["q"]/pmge["s"]/np.sqrt(2.*np.pi)

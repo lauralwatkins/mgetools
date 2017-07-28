@@ -35,8 +35,8 @@ def projmass(R, pmge, ellrad=False):
     
     if ellrad:
         # within elliptic radius for *constant* flattening 
-        if pmge["q"].std()!=0: print "MGE.PROJMASS WARNING: you selected " \
-            + "elliptical radius but your flattening is not constant."
+        if pmge["q"].std()!=0: print("MGE.PROJMASS WARNING: you selected " \
+            + "elliptical radius but your flattening is not constant.")
         for i in range(len(R)):
             intg = 1 - np.exp(-0.5*(R[i]/pmge["s"])**2)
             res[i] = 2*np.pi*np.sum(pmge["s"]**2*pmge["q"]*pmge["i"]*intg)

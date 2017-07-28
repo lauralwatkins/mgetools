@@ -21,7 +21,7 @@ def qmed(mge, lim=0):
     if lim != 0:
         try: lim.to(mge["s"].unit)
         except:
-            print "MGE.SURF: cannot convert lim units to MGE width units."
+            print("MGE.SURF: cannot convert lim units to MGE width units.")
             return np.nan
     
     wh = mge["s"]<lim

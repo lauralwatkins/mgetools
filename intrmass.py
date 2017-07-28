@@ -40,8 +40,8 @@ def intrmass(r, imge, ellrad=False):
     
     if ellrad:
         # within ellipsoidal radius for *constant* flattening
-        if imge["q"].std()!=0: print "MGE.INTRMASS WARNING: you selected " \
-            + "elliptical radius but your flattening is not constant."
+        if imge["q"].std()!=0: print("MGE.INTRMASS WARNING: you selected " \
+            + "elliptical radius but your flattening is not constant.")
         for i in range(len(r)):
             x  = r[i]/np.sqrt(2.)/imge["s"]
             intg = np.sqrt(np.pi/2.)*special.erf(x.value) \

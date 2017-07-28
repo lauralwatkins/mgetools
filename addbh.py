@@ -24,13 +24,13 @@ def addbh(mge, mbh, rbh):
         try:
             (mbh/rbh**2).to(mge["i"].unit)
         except:
-            print "MGE.ADDBH: cannot convert mbh/rbh**2 units to MGE density units."
+            print("MGE.ADDBH: cannot convert mbh/rbh**2 units to MGE density units.")
             return np.nan
         
         try:
             rbh.to(mge["s"].unit)
         except:
-            print "MGE.ADDBH: cannot convert rbh units to MGE width units."
+            print("MGE.ADDBH: cannot convert rbh units to MGE width units.")
             return np.nan
         
         bh = mge[:1].copy()
