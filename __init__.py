@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 
-import os
-import string
-
-for f in os.listdir( os.path.dirname( __file__ ) ):
-    name, ext = string.split( f, "." )
-    if ( name != "__init__" and ext == "py" ):
-        tmp = __import__( name, locals(), globals(), [name], -1 )
-        vars()[name] = vars(tmp)[name]
-
-del f, name, ext, os, string
+from .addbh import addbh
+from .dens import dens
+from .deproject import deproject
+from .ellip import ellip
+from .incl import incl
+from .intrmass import intrmass
+from .plot1d import plot1d
+from .plot1dmaj import plot1dmaj
+from .plot2d import plot2d
+from .project import project
+from .projmass import projmass
+from .qintr import qintr
+from .qmed import qmed
+from .qproj import qproj
+from .surf import surf
