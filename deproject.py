@@ -4,7 +4,8 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
-from numpy import *
+import numpy as np
+from astropy import table
 import sys
 
 
@@ -14,24 +15,25 @@ def deproject(pmge, incl):
     Deprojects an MGE given an inclination value.
     
     INPUTS
-      pmge : projected MGE
-      incl : inclination [radians]
+      pmge : projected MGE, must be given as an astropy Table or QTable
+      incl : inclination [must be in radians unless unit explictly given]
     """
     
-    imge = pmge.copy()
+    imge = table.QTable()
+    imge["n"] = pmge["n"]
+    imge["s"] = pmge["s"]
     
-    imge_q = pmge["q"]**2 - cos(incl)**2
-    
-    if any(imge_q <= 0):
-        print 'Inclination too low q < 0'
+    imge["q"] = pmge["q"]**2 - np.cos(incl)**2
+    if np.any(imge["q"] <= 0):
+        print "MGE.DEPROJECT: Inclination too low q < 0"
         sys.exit(1)
     
-    imge_q = sqrt(imge_q) / sin(incl)
-    if any(imge_q < 0.05):
-        print 'q < 0.05 components'
+    imge["q"] = np.sqrt(imge["q"]) / np.sin(incl)
+    if np.any(imge["q"] < 0.05):
+        print "MGE.DEPROJECT: q < 0.05 components"
         sys.exit(1)
     
-    imge["q"] = imge_q
-    imge["i"] *= pmge["q"] / imge["q"] / pmge["s"] / sqrt(2.*pi)
+    imge["i"] = pmge["i"]*pmge["q"]/imge["q"]/pmge["s"]/np.sqrt(2.*np.pi)
+    imge = imge["n", "i", "s", "q"]
     
     return imge

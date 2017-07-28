@@ -5,6 +5,7 @@
 # -----------------------------------------------------------------------------
 
 import numpy as np
+from astropy import units as u
 
 
 def incl(p, q):
@@ -18,7 +19,10 @@ def incl(p, q):
       q : intrinsic axis ratios
     """
     
-    if q==1.: i = np.pi/2.
-    else: i = np.arccos(np.sqrt((p**2-q**2)/(1.-q**2)))
+    if np.all(q==1.): i = np.pi/2.
+    else:
+        w = q!=1.
+        ii = np.arccos(np.sqrt((p[w]**2-q[w]**2)/(1.-q[w]**2))).value
+        i = ii.mean()
     
-    return i
+    return i*u.rad

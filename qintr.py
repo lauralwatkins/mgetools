@@ -15,7 +15,7 @@ def qintr(p, i):
     
     INPUTS
       p : projected axis ratios
-      i : inclination angle [radians]
+      i : inclination angle [must be in radians unless unit explictly given]
     """
     
     q = np.sqrt(p**2-np.cos(i)**2)/np.sin(i)

@@ -14,8 +14,8 @@ def qproj(q, i):
     and the inclination angle.
     
     INPUTS
-      q : intrinsic acis ratios
-      i : inclination angle [radians]
+      q : intrinsic axis ratios
+      i : inclination angle [must be in radians unless unit explictly given]
     """
     
     p = np.sqrt(q**2*np.sin(i)**2+np.cos(i)**2)

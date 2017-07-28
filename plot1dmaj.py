@@ -4,13 +4,13 @@
 # Laura L Watkins [lauralwatkins@gmail.com]
 # -----------------------------------------------------------------------------
 
+from numpy import *
 import matplotlib.pyplot as plt
-from surf import surf
-from numpy import array, linspace, log10
-import colours
+from . import surf
+import colours, toolbox
 
 
-def plot1dmaj( mge_in, ml=1., save="", xlog=False ):
+def plot1dmaj(mge_in, ml=1., logscale=True, cmap=None):
     
     """
     Plots 1d major-axis surface density profiles for a given mge.
@@ -19,67 +19,56 @@ def plot1dmaj( mge_in, ml=1., save="", xlog=False ):
       mge_in : projected MGE
     
     OPTIONS
-      ml     : adjust central surface brightness values by mass-to-light ratio
-      save   : path to save location
+      ml       : adjust central surface brightness values by mass-to-light ratio
+      logscale : make x-axis logatrithmic
+      cmap     : colormap to use
     """
     
+    # adjust by mass-to-light ratio
     mge = mge_in.copy()
-    
-    mge.i *= ml
+    mge["i"] *= ml
     
     # plotting grid
-    lim = mge.s.max() * 3.
-    inlim = mge.s.min() / 2.
-    if xlog: xx = 10**linspace( log10( inlim ), log10( lim ), 51 )
-    else: xx = linspace( 0., lim, 51 )
+    rlim = toolbox.lims(mge["s"], f=[0.4,0.25], log=True)
+    rr = logspace(log10(rlim[0]), log10(rlim[1]), 101)
     
     # surface brightness
-    sx = array( [ log10( surf( mge, x, 0. ) ) for x in xx ] )
-    sxx = array( [ [ log10( surf( mge[i:i+1], x, 0. ) ) for x in xx ] \
-        for i in range( mge.size ) ] )
-    
-    # plot in arcmin not arcsec
-    xx /= 60.
-    lim /= 60.
+    sx = surf(mge, rr, 0)
+    sxx = array([ surf(mge[i:i+1], rr, 0) for i in range(size(mge)) ])
     
     # y axis limits
-    vmin = log10( mge.i.min() / 2. )
-    vlim = sx.max()
-    ptp = vlim - vmin
-    vlim = vlim + ptp * 0.1
-    vmin = vmin - ptp * 0.1
+    ss = array([sxx[:,0].min()] + sx.tolist())
     
     # set up plotting
-    plt.rc( 'text', usetex=True )
-    plt.rc( 'font', family='serif' )
-    plt.rc( 'xtick', labelsize='8' )
-    plt.rc( 'ytick', labelsize='8' )
-    plt.rc( 'axes', labelsize='10' )
-    rainbow = colours.cmap_rainbow()
-    rgb = colours.cmap2rgb( rainbow )
-    cc = linspace( 255., 0., mge.size )
+    plt.rc('text', usetex=True)
+    plt.rc('font', family='serif')
+    plt.rc('xtick', labelsize='8')
+    plt.rc('ytick', labelsize='8')
+    plt.rc('axes', labelsize='10')
+    if not cmap: cmap = plt.rcParams["image.cmap"]
+    rgb = colours.cmap2rgb(cmap)
+    cc = linspace(255, 0, size(mge))
     
     
-    yl = r"$\log \; $" \
-        + r"$[ I \; ( \mathrm{{L}}_{{\odot}} \mathrm{{pc}}^{{-2}} ) ]$"
+    yl = r"$I \; [\rm L_{\odot} pc^{-2}]$"
     
-    fig = plt.figure( figsize=( 4, 3 ) )
+    fig = plt.figure(figsize=(4,3))
     
     # x-axis plot
-    ax = fig.add_axes( [ 0.12, 0.12, 0.86, 0.87 ] )
+    ax = fig.add_axes([0.14, 0.12, 0.84, 0.87])
+    if logscale: plt.loglog()
+    else: plt.semilogy()
     
-    if xlog: ax.semilogx( xx, sx, "k", lw=3, alpha=0.8 )
-    else: ax.plot( xx, sx, "k", lw=3, alpha=0.8 )
+    ax.plot(rr, sx, "k", lw=3, alpha=0.8)
+    for i in range(size(mge)):
+        ax.plot(rr, sxx[i], lw=3, alpha=0.8, c=rgb(cc[i]))
     
-    for i in range( mge.size ):
-        ax.plot( xx, sxx[i], "k", lw=3, alpha=0.8, c=rgb( cc[i] ) )
+    ax.set_xlim(rlim)
+    ax.set_ylim(toolbox.lims(sx, f=[0.2,0.1], log=True))
     
-    ax.set_xlim( 0., lim )
-    ax.set_ylim( vmin, vlim )
-    
-    if xlog: ax.set_xlabel( r"$\log[ x' (\mathrm{{arcmin}}) ]$" )
-    else: ax.set_xlabel( r"$x' [ \mathrm{{arcmin}} ]$" )
-    ax.set_ylabel( yl )
+    ax.set_xlabel(r"$x' [\rm arcsec]$")
+    ax.set_ylabel(yl)
     
     plt.show()
-    if save: plt.savefig( save )
+    
+    return 0
