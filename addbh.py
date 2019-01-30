@@ -33,15 +33,10 @@ def addbh(mge, mbh, rbh):
             print("MGE.ADDBH: cannot convert rbh units to MGE width units.")
             return np.nan
         
-        bh = mge[:1].copy()
-        bh["n"] = 0
-        bh["i"] = (mbh/2./np.pi/rbh**2).to(mge["i"].unit)
-        bh["s"] = (rbh).to(mge["s"].unit)
-        bh["q"] = 1.
+        mge.add_row()
+        mge["i"][-1] = (mbh/2./np.pi/rbh**2).to(mge["i"].unit)
+        mge["s"][-1] = rbh
+        mge["q"][-1] = 1
+        mge.sort("s")
         
-        mgebh = table.join(bh, mge, join_type="outer")
-        mgebh["n"] += 1
-    
-    else: mgebh = mge
-    
-    return mgebh
+    return mge
