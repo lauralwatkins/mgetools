@@ -46,7 +46,7 @@ def Deproject(pmge, inclination=None, distance=None):
             # convert to length units used in surface density
             imge["s"] = (pmge["s"]*distance/u.rad).to(length_unit)
     
-    # adjustment to turn surface density into volume density
+    # convert surface density into volume density
     imge["i"] /= imge["s"]*np.sqrt(2*np.pi)
     
     # check to see if flattening is given and the MGE is flattened
@@ -58,14 +58,18 @@ def Deproject(pmge, inclination=None, distance=None):
                 +" inclination.")
             return
         
-        # fail if inclination is too low (as this gives negative flattenings)
+        # first step of flattening conversion
         imge["q"] = pmge["q"]**2 - np.cos(inclination)**2
+        
+        # fail if negative values (indicates inclination is too low)
         if np.any(imge["q"] <= 0):
             print("MGE.DEPROJECT: Inclination too low q < 0.")
             return
         
-        # fail if any components are extremely flattened
+        # second step of flattening conversion
         imge["q"] = np.sqrt(imge["q"]) / np.sin(inclination)
+        
+        # fail if any components are extremely flattened
         if np.any(imge["q"] < 0.05):
             print("MGE.DEPROJECT: q < 0.05 components.")
             return
