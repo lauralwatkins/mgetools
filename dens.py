@@ -1,33 +1,39 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# MGE.DENS
-# Laura L Watkins [lauralwatkins@gmail.com]
-# -----------------------------------------------------------------------------
 
 import numpy as np
+from scipy import stats
+from astropy import units as u
 
 
-def dens(imge, r, z):
+def VolumeDensity(imge, R, z):
     
     """
-    Calculates the volume density of an MGE at given (R,z).
+    Calculates the volume density of an MGE at given position (R,z).
     
     INPUTS
       imge : intrinsic MGE, must be given as an astropy Table or QTable
-      r    : intrinsic R, should have the same units as MGE widths
+      R    : intrinsic R, should have the same units as MGE widths
       z    : intrinsic z, should have the same units as MGE widths
     """
     
     try:
-        r.to(imge["s"].unit)
+        R.to(imge["s"].unit)
         z.to(imge["s"].unit)
     except:
-        print("MGE.SURF: cannot convert r and z units to MGE width units.")
+        print("MGE.VolumeDensity: cannot convert R and z units to MGE "\
+            +"width units.")
         return np.nan
     
-    cpts = np.array([ cpt["i"]*np.exp(-0.5/cpt["s"]**2 \
-        *(r.to(imge["s"].unit)**2+(z.to(imge["s"].unit)/cpt["q"])**2)) \
-        for cpt in imge ])*imge["i"].unit
-    dens = np.sum(cpts, axis=0)
+    # copy R and z arrays Ncpt times
+    RR = u.Quantity([R.T]*len(imge)).T
+    zz = u.Quantity([z.T]*len(imge)).T
     
-    return dens
+    # combine R and z arrays with flattening, make sure unit matches mge widths
+    Rzq = np.sqrt(RR**2 + zz**2/imge["q"]**2).to(imge["s"].unit)
+    
+    # calculate density profile
+    height = np.sqrt(2*np.pi)*imge["s"]*imge["i"]
+    density = np.sum(height*stats.norm.pdf(Rzq, 0, imge["s"])/imge["s"].unit,
+         axis=-1)
+    
+    return density
