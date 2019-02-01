@@ -13,10 +13,14 @@ def IntegrandCumulative2D(phi, R, pmge):
     return res
 
 
-def Cumulative2D(R, pmge, ellrad=False):
+def Cumulative2D(R, pmge, ellrad=False, distance=None):
     
     """
     Calculates cumulative profile from a 2-dimensional (projected) MGE.
+    
+    If the projected widths are given in angular units a distance is required 
+    to cancel with the physical units in the density. The code works fine 
+    without a distance, but will give mixed units (eg Msun arcsec^2 pc^-2).
     
     INPUTS
       R    : projected radius
@@ -24,6 +28,7 @@ def Cumulative2D(R, pmge, ellrad=False):
     
     OPTIONAL KEYWORDS
       ellrad : calculate within elliptic radius (only for constant flattening)
+      distance : distance to object [requires units, default None]
     """
     
     res = np.zeros(len(R))*pmge["i"].unit*pmge["s"].unit**2
@@ -45,5 +50,17 @@ def Cumulative2D(R, pmge, ellrad=False):
         for i in range(len(R)):
             res[i] = 4*quad(lambda x: IntegrandCumulative2D(x, R[i], pmge),
                 0, np.pi/2)[0]*pmge["i"].unit*pmge["s"].unit**2
+    
+    if distance is not None and pmge["s"].unit.physical_type is "angle":
+        
+        # base units of surface density and their powers
+        bases = np.array(pmge["i"].unit.bases)
+        powers = np.array(pmge["i"].unit.powers)
+        
+        # numerator of density
+        value_unit = bases[bases!=bases[powers==-2]][0]
+        
+        # cancel angular and physical units
+        res = (res*distance**2/u.rad**2).to(value_unit)
     
     return res
