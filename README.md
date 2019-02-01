@@ -42,6 +42,8 @@ The MGEs themselves should be given as an astropy Table or QTable, with units fo
 * "s" : width of the MGE component
 * "q" : flattening of the MGE component
 
+Directory **Example** contains a datafile with an example MGE, and a jupyter notebook with some usage examples and tests for each function.
+
 [Emsellem, Monnet & Bacon (1994)](https://ui.adsabs.harvard.edu/#abs/1994A&A...285..723E/) and [Cappellari (2002)](https://ui.adsabs.harvard.edu/#abs/2002MNRAS.333..400C/) are good references if you wish to learn more about MGEs and their uses.
 
 
