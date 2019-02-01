@@ -4,7 +4,7 @@ import numpy as np
 from astropy import units as u
 
 
-def project(imge, inclination=None, distance=None, angular_unit=None):
+def Project(imge, inclination=None, distance=None, angular_unit=None):
     
     """
     Projects an MGE given an inclination value.

@@ -2,14 +2,14 @@
 
 from .addbh import addbh
 from .dens import dens
-from .deproject import deproject
+from .Deproject import Deproject
 from .ellip import ellip
 from .incl import incl
 from .intrmass import intrmass
 from .plot1d import plot1d
 from .plot1dmaj import plot1dmaj
 from .plot2d import plot2d
-from .project import project
+from .Project import Project
 from .projmass import projmass
 from .qintr import qintr
 from .qmed import qmed
