@@ -1,19 +1,17 @@
 #!/usr/bin/env python
-# -----------------------------------------------------------------------------
-# MGE.SURF
-# Laura L Watkins [lauralwatkins@gmail.com]
-# -----------------------------------------------------------------------------
 
 import numpy as np
+from scipy import stats
+from astropy import units as u
 
 
-def surf(pmge, x, y):
+def SurfaceDensity(pmge, x, y):
     
     """
-    Calculates the surface density of an MGE at given (x',y').
+    Calculates the surface density of an MGE at given position (x',y').
     
     INPUTS
-      pmge : projected MGE, must be given as an astropy Table or QTable
+      pmge : projected MGE, must be given as an astropy QTable
       x    : projected x', should have the same units as MGE widths
       y    : projected y', should have the same units as MGE widths
     """
@@ -22,12 +20,20 @@ def surf(pmge, x, y):
         x.to(pmge["s"].unit)
         y.to(pmge["s"].unit)
     except:
-        print("MGE.SURF: cannot convert x and y units to MGE width units.")
+        print("MGE.SurfaceDensity: cannot convert x and y units to MGE "\
+            +"width units.")
         return np.nan
     
-    cpts = np.array([ cpt["i"]*np.exp(-0.5/cpt["s"]**2 \
-        *(x.to(pmge["s"].unit)**2+(y.to(pmge["s"].unit)/cpt["q"])**2)) \
-        for cpt in pmge ])*pmge["i"].unit
-    surf = np.sum(cpts, axis=0)
+    # copy x and y arrays Ncpt times
+    xx = u.Quantity([x.T]*len(pmge)).T
+    yy = u.Quantity([y.T]*len(pmge)).T
     
-    return surf
+    # combine R and z arrays with flattening, make sure unit matches mge widths
+    xyq = np.sqrt(xx**2 + yy**2/pmge["q"]**2).to(pmge["s"].unit)
+    
+    # calculate density profile
+    height = np.sqrt(2*np.pi)*pmge["s"]*pmge["i"]
+    density = np.sum(height*stats.norm.pdf(xyq, 0, pmge["s"])/pmge["s"].unit,
+         axis=-1)
+    
+    return density
