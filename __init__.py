@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from .addbh import addbh
-from .dens import dens
 from .Deproject import Deproject
 from .ellip import ellip
 from .incl import incl
@@ -14,4 +13,5 @@ from .projmass import projmass
 from .qintr import qintr
 from .qmed import qmed
 from .qproj import qproj
-from .surf import surf
+from .SurfaceDensity import SurfaceDensity
+from .VolumeDensity import VolumeDensity
