@@ -26,8 +26,16 @@ def Project(imge, inclination=None, distance=None, angular_unit=None):
     # initialise projected MGE by copying intrinsic MGE
     pmge = imge.copy()
     
+    # base units of volume density and their powers
+    bases = np.array(imge["i"].unit.bases)
+    powers = np.array(imge["i"].unit.powers)
+    
+    # length unit for volume
+    length_unit = bases[powers==-3][0]
+    
     # convert to turn volume density into surface density
-    pmge["i"] *= np.sqrt(2*np.pi)*pmge["s"]
+    pmge["i"] *= np.sqrt(2*np.pi)*pmge["s"].to(length_unit)
+    
     
     # check to see if flattening is given and the MGE is flattened
     if "q" in imge.colnames and np.any(imge["q"]!=1):
