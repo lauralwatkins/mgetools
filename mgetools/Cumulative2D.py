@@ -58,7 +58,8 @@ def Cumulative2D(R, pmge, ellrad=False, distance=None):
         powers = np.array(pmge["i"].unit.powers)
         
         # numerator of density
-        value_unit = bases[bases!=bases[powers==-2]][0]
+        area_unit = bases[bases==bases[powers==-2]][0]
+        value_unit = pmge["i"].unit * area_unit**2
         
         # cancel angular and physical units
         res = (res*distance**2/u.rad**2).to(value_unit)
