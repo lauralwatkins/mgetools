@@ -34,7 +34,7 @@ def Deproject(pmge, inclination=None, distance=None):
     length_unit = bases[powers==-2][0]
 
     # check to see if projected MGE widths are angles
-    if pmge["s"].unit.physical_type is "angle":
+    if pmge["s"].unit.physical_type == "angle":
         
         # need distance to convert to physical units, so fail if not given
         if distance is None:
